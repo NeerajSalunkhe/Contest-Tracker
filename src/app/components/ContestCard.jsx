@@ -9,6 +9,7 @@ import ModalPortal from './ModalPortal';
 import { toast, ToastContainer } from 'react-toastify';
 import { useUser } from '@clerk/nextjs';
 import { BellRing } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function ContestCard({ contest, show }) {
     const { user, isLoaded } = useUser();
@@ -19,7 +20,7 @@ export default function ContestCard({ contest, show }) {
     const [bookmarked, setBookmarked] = useState(false);
     const [reminders, setReminders] = useState([]);
     const [reload, setReload] = useState(false); // to trigger reload after modal changes
-
+    const router=useRouter();
 
     const cardRef = useRef(null);
     const [visible, setVisible] = useState(false);
@@ -157,6 +158,7 @@ export default function ContestCard({ contest, show }) {
         return () => clearInterval(interval);
     }, [contest.startTime, contest.endTime]);
 
+    if(!user) return null;
     return (
         <div ref={cardRef} className="relative z-0 transition-transform hover:scale-[1.02] hover:shadow-2xl duration-300">
             <div className="rounded-2xl border min-h-76 border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">

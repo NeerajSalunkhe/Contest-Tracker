@@ -5,11 +5,11 @@ import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import PlatformLogo from './PlatformLogo';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/nextjs';
-
+import { useRouter } from 'next/navigation';
 export default function FinishedContestCard({ contest, show }) {
   const { user, isLoaded } = useUser();
   const cardRef = useRef(null);
-
+  const router=useRouter();
   const [visible, setVisible] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -99,7 +99,7 @@ export default function FinishedContestCard({ contest, show }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userid: user?.id,
-          email:user?.primaryEmailAddress?.emailAddress,
+          email: user?.primaryEmailAddress?.emailAddress,
           contest,
           bookmark: newState,
         }),
@@ -121,7 +121,7 @@ export default function FinishedContestCard({ contest, show }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userid: user?.id,
-          email:user?.primaryEmailAddress?.emailAddress,
+          email: user?.primaryEmailAddress?.emailAddress,
           contest,
           completed: newState,
         }),
@@ -131,7 +131,7 @@ export default function FinishedContestCard({ contest, show }) {
       setChecked(!newState);
     }
   };
-
+  if (!user) return null;
   return (
     <div ref={cardRef} className="relative z-0 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl">
       <div className="min-h-76 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">

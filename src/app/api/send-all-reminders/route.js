@@ -36,14 +36,11 @@ export async function GET() {
             new Date(reminder.time) <= new Date()
           ) {
             try {
-              const istStartTime = new Date(
-                new Date(contest.startTime).toLocaleString('en-US', {
-                  timeZone: 'Asia/Kolkata',
-                })
-              );
+              const startDate = new Date(contest.startTime); // Stored in UTC
 
+              // Time difference from now
               const now = new Date();
-              const diffMs = istStartTime.getTime() - now.getTime();
+              const diffMs = startDate.getTime() - now.getTime();
 
               const hours = Math.floor(diffMs / (1000 * 60 * 60));
               const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
@@ -52,12 +49,14 @@ export async function GET() {
                 hours > 0 ? `${hours} hour${hours > 1 ? 's' : ''} ` : ''
               }${minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : ''}`.trim();
 
-              const formattedStart = istStartTime.toLocaleString('en-IN', {
+              // Format start time in IST
+              const formattedStart = new Intl.DateTimeFormat('en-IN', {
                 timeZone: 'Asia/Kolkata',
                 dateStyle: 'full',
                 timeStyle: 'short',
-              });
+              }).format(startDate);
 
+              // Send the email
               await transporter.sendMail({
                 from: process.env.GMAIL_USER,
                 to: email,
@@ -65,6 +64,7 @@ export async function GET() {
                 text: `Hello!\n\nThis is a reminder that the contest "${contest.name}" on ${contest.url} is starting at:\n${formattedStart} IST.\nTime remaining: ${humanReadableTime || 'less than a minute'}.\n\nGood luck!`,
               });
 
+              // Mark reminder as sent
               reminder.sent = true;
               shouldSave = true;
               sentCount++;
