@@ -114,14 +114,11 @@ export default function ContestCard({ contest, show }) {
             setBookmarked(!newState); // rollback on failure
         }
     };
-
     useEffect(() => {
         const updateCountdown = () => {
-            const now = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
-            const nowIST = new Date(now).getTime();
-
-            const startIST = new Date(new Date(contest.startTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime();
-            const endIST = new Date(new Date(contest.endTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime();
+            const nowIST = parseISTTime(new Date()).getTime();
+            const startIST = parseISTTime(contest.startTime).getTime();
+            const endIST = parseISTTime(contest.endTime).getTime();
             const duration = endIST - startIST;
 
             if (nowIST >= startIST && nowIST <= endIST) {
@@ -155,10 +152,12 @@ export default function ContestCard({ contest, show }) {
                 setProgress(100);
             }
         };
+
         updateCountdown();
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);
     }, [contest.startTime, contest.endTime]);
+
 
     if (!user) return null;
     return (
@@ -202,18 +201,13 @@ export default function ContestCard({ contest, show }) {
                     )}
                 </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(
-                        new Date(contest.startTime).toLocaleString('en-US', {
-                            timeZone: 'Asia/Kolkata',
-                        })
-                    ).toLocaleString('en-IN', {
+                    {parseISTTime(contest.startTime).toLocaleString('en-IN', {
                         timeZone: 'Asia/Kolkata',
                         dateStyle: 'medium',
                         timeStyle: 'short',
                     })}{' '}
                     IST
                 </span>
-
                 {/* Progress Bar */}
                 <div className="w-full h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-3 overflow-hidden">
                     <div
@@ -261,5 +255,11 @@ export default function ContestCard({ contest, show }) {
                 </ModalPortal>
             )}
         </div>
+    );
+}
+
+function parseISTTime(datetime) {
+    return new Date(
+        new Date(datetime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
     );
 }

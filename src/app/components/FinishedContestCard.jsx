@@ -178,17 +178,14 @@ export default function FinishedContestCard({ contest, show }) {
           {contest.name}
         </h2>
         <span className="text-xs text-gray-500 dark:text-gray-400">
-          {new Date(
-            new Date(contest.startTime).toLocaleString('en-US', {
-              timeZone: 'Asia/Kolkata',
-            })
-          ).toLocaleString('en-IN', {
+          {parseISTTime(contest.startTime).toLocaleString('en-IN', {
             timeZone: 'Asia/Kolkata',
             dateStyle: 'medium',
             timeStyle: 'short',
           })}{' '}
           IST
         </span>
+
         {/* Buttons */}
         <div className="flex gap-3 pt-2">
           <a
@@ -217,5 +214,11 @@ export default function FinishedContestCard({ contest, show }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function parseISTTime(datetime) {
+  return new Date(
+    new Date(datetime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
   );
 }

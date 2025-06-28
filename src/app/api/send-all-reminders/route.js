@@ -78,7 +78,6 @@ export async function GET() {
           }
         }
       }
-
       if (shouldSave) {
         await user.save();
       }

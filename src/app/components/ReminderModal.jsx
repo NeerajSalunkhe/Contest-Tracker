@@ -13,7 +13,13 @@ const reminderOptions = [
   { label: 'On Contest day (6 AM)', special: '6AM' },
 ];
 
-export default function ReminderModal({ userid, email,contest, onClose, reminders = [] }) {
+function parseISTTime(datetime) {
+  return new Date(
+    new Date(datetime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+  );
+}
+
+export default function ReminderModal({ userid, email, contest, onClose, reminders = [] }) {
   const [scrollY, setScrollY] = useState(0);
   const [viewportHeight, setViewportHeight] = useState(0);
   const [loadingIndex, setLoadingIndex] = useState(null);
@@ -30,11 +36,12 @@ export default function ReminderModal({ userid, email,contest, onClose, reminder
   const platformName = contest.platform.replace('.com', '');
 
   const formatTime = (d) =>
-    d.toLocaleString('en-IN', {
+    parseISTTime(d).toLocaleString('en-IN', {
       timeZone: 'Asia/Kolkata',
       dateStyle: 'full',
       timeStyle: 'short',
     });
+
 
   const getReminderTimestamp = (type) => {
     if (type.special === '6AM') {
@@ -186,7 +193,7 @@ export default function ReminderModal({ userid, email,contest, onClose, reminder
                   onClick={() => handleToggleReminder(type, i)}
                   disabled={loadingIndex !== null}
                   isLoading={loadingIndex === i}
-                  
+
                   className={`cursor-pointer w-full flex items-center justify-center gap-2 text-sm px-5 py-2.5 rounded-lg font-medium transition-all shadow-lg ${isSet
                     ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white hover:from-red-500 hover:via-red-600 hover:to-red-700'
                     : 'bg-gradient-to-r from-orange-400 via-yellow-400 to-yellow-500 text-black hover:from-orange-500 hover:via-yellow-500 hover:to-yellow-600'
