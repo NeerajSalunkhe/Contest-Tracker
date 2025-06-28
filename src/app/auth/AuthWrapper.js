@@ -1,4 +1,11 @@
-'use client';
+
+export const metadata = {
+  title: 'Contest Tracker',
+  description: 'Track all coding contests in one place',
+  icons: {
+    icon: '/remind.png', // relative to /public
+  },
+};
 
 export default function AuthWrapper({ children }) {
     return (

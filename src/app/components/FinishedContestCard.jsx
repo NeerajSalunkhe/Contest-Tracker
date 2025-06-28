@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 export default function FinishedContestCard({ contest, show }) {
   const { user, isLoaded } = useUser();
   const cardRef = useRef(null);
-  const router=useRouter();
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -178,14 +178,17 @@ export default function FinishedContestCard({ contest, show }) {
           {contest.name}
         </h2>
         <span className="text-xs text-gray-500 dark:text-gray-400">
-          {new Date(contest.startTime).toLocaleString('en-IN', {
+          {new Date(
+            new Date(contest.startTime).toLocaleString('en-US', {
+              timeZone: 'Asia/Kolkata',
+            })
+          ).toLocaleString('en-IN', {
             timeZone: 'Asia/Kolkata',
             dateStyle: 'medium',
             timeStyle: 'short',
           })}{' '}
           IST
         </span>
-
         {/* Buttons */}
         <div className="flex gap-3 pt-2">
           <a

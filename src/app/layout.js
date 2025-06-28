@@ -19,7 +19,7 @@ export const metadata = {
   title: 'Contest Tracker',
   description: 'Track all coding contests in one place',
   icons: {
-    icon: '/remind.jpg', // ✅ should be a .png, .ico, or .svg — NOT a .gif
+    icon: '/bell.svg', // relative to /public
   },
 };
 

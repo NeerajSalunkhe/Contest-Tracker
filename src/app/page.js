@@ -244,7 +244,7 @@ export default function ContestsPage() {
             </div>
           </div>
         </div>
-        <ToastContainer
+        {/* <ToastContainer
           autoClose={2000}
           closeOnClick
           pauseOnHover
@@ -270,7 +270,7 @@ export default function ContestsPage() {
         //     zIndex: 9999,
         //     pointerEvents: 'none',
         // }}
-        />
+        /> */}
       </div>
     </ProtectedRoute>
   );

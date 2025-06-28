@@ -20,7 +20,7 @@ export default function ContestCard({ contest, show }) {
     const [bookmarked, setBookmarked] = useState(false);
     const [reminders, setReminders] = useState([]);
     const [reload, setReload] = useState(false); // to trigger reload after modal changes
-    const router=useRouter();
+    const router = useRouter();
 
     const cardRef = useRef(null);
     const [visible, setVisible] = useState(false);
@@ -117,17 +117,19 @@ export default function ContestCard({ contest, show }) {
 
     useEffect(() => {
         const updateCountdown = () => {
-            const now = Date.now();
-            const start = new Date(contest.startTime).getTime();
-            const end = new Date(contest.endTime).getTime();
-            const duration = end - start;
+            const now = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+            const nowIST = new Date(now).getTime();
 
-            if (now >= start && now <= end) {
+            const startIST = new Date(new Date(contest.startTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime();
+            const endIST = new Date(new Date(contest.endTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime();
+            const duration = endIST - startIST;
+
+            if (nowIST >= startIST && nowIST <= endIST) {
                 setIsLive(true);
                 setTimeLeft('LIVE');
-                setProgress(((now - start) / duration) * 100);
-            } else if (now < start) {
-                const distance = start - now;
+                setProgress(((nowIST - startIST) / duration) * 100);
+            } else if (nowIST < startIST) {
+                const distance = startIST - nowIST;
 
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
@@ -144,8 +146,8 @@ export default function ContestCard({ contest, show }) {
                 setIsLive(false);
                 setTimeLeft(`Starts in : ${formattedTime}`);
 
-                const totalWait = start - (start - duration);
-                const waited = now - (start - duration);
+                const totalWait = startIST - (startIST - duration);
+                const waited = nowIST - (startIST - duration);
                 setProgress((waited / totalWait) * 100);
             } else {
                 setIsLive(false);
@@ -158,7 +160,7 @@ export default function ContestCard({ contest, show }) {
         return () => clearInterval(interval);
     }, [contest.startTime, contest.endTime]);
 
-    if(!user) return null;
+    if (!user) return null;
     return (
         <div ref={cardRef} className="relative z-0 transition-transform hover:scale-[1.02] hover:shadow-2xl duration-300">
             <div className="rounded-2xl border min-h-76 border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
@@ -200,13 +202,18 @@ export default function ContestCard({ contest, show }) {
                     )}
                 </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(contest.startTime).toLocaleString('en-IN', {
+                    {new Date(
+                        new Date(contest.startTime).toLocaleString('en-US', {
+                            timeZone: 'Asia/Kolkata',
+                        })
+                    ).toLocaleString('en-IN', {
                         timeZone: 'Asia/Kolkata',
                         dateStyle: 'medium',
                         timeStyle: 'short',
                     })}{' '}
                     IST
                 </span>
+
                 {/* Progress Bar */}
                 <div className="w-full h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-3 overflow-hidden">
                     <div
