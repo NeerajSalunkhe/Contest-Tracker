@@ -6,6 +6,17 @@ import PlatformLogo from './PlatformLogo';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+
+
+function getISTTime(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+}
+
 export default function FinishedContestCard({ contest, show }) {
   const { user, isLoaded } = useUser();
   const cardRef = useRef(null);
@@ -178,12 +189,7 @@ export default function FinishedContestCard({ contest, show }) {
           {contest.name}
         </h2>
         <span className="text-xs text-gray-500 dark:text-gray-400">
-          {parseISTTime(contest.startTime).toLocaleString('en-IN', {
-            timeZone: 'Asia/Kolkata',
-            dateStyle: 'medium',
-            timeStyle: 'short',
-          })}{' '}
-          IST
+          {getISTTime(contest.startTime)} IST
         </span>
 
         {/* Buttons */}
@@ -217,8 +223,4 @@ export default function FinishedContestCard({ contest, show }) {
   );
 }
 
-function parseISTTime(datetime) {
-  return new Date(
-    new Date(datetime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
-  );
-}
+

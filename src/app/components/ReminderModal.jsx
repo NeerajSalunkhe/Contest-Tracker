@@ -35,12 +35,14 @@ export default function ReminderModal({ userid, email, contest, onClose, reminde
   const endDate = new Date(contest.endTime);
   const platformName = contest.platform.replace('.com', '');
 
-  const formatTime = (d) =>
-    parseISTTime(d).toLocaleString('en-IN', {
+  const formatTime = (datetime) => {
+    const formatter = new Intl.DateTimeFormat('en-IN', {
       timeZone: 'Asia/Kolkata',
       dateStyle: 'full',
       timeStyle: 'short',
     });
+    return formatter.format(new Date(datetime));
+  };
 
 
   const getReminderTimestamp = (type) => {

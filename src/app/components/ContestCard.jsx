@@ -11,6 +11,8 @@ import { useUser } from '@clerk/nextjs';
 import { BellRing } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+
+
 export default function ContestCard({ contest, show }) {
     const { user, isLoaded } = useUser();
     const [showModal, setShowModal] = useState(false);
@@ -116,9 +118,9 @@ export default function ContestCard({ contest, show }) {
     };
     useEffect(() => {
         const updateCountdown = () => {
-            const nowIST = parseISTTime(new Date()).getTime();
-            const startIST = parseISTTime(contest.startTime).getTime();
-            const endIST = parseISTTime(contest.endTime).getTime();
+            const nowIST = getISTDateObject(new Date()).getTime();
+            const startIST = getISTDateObject(contest.startTime).getTime();
+            const endIST = getISTDateObject(contest.endTime).getTime();
             const duration = endIST - startIST;
 
             if (nowIST >= startIST && nowIST <= endIST) {
@@ -137,7 +139,7 @@ export default function ContestCard({ contest, show }) {
                     days.toString().padStart(2, '0'),
                     hours.toString().padStart(2, '0'),
                     minutes.toString().padStart(2, '0'),
-                    seconds.toString().padStart(2, '0')
+                    seconds.toString().padStart(2, '0'),
                 ].join(':');
 
                 setIsLive(false);
@@ -157,6 +159,7 @@ export default function ContestCard({ contest, show }) {
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);
     }, [contest.startTime, contest.endTime]);
+
 
 
     if (!user) return null;
@@ -201,12 +204,7 @@ export default function ContestCard({ contest, show }) {
                     )}
                 </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {parseISTTime(contest.startTime).toLocaleString('en-IN', {
-                        timeZone: 'Asia/Kolkata',
-                        dateStyle: 'medium',
-                        timeStyle: 'short',
-                    })}{' '}
-                    IST
+                    {getISTTime(contest.startTime)} IST
                 </span>
                 {/* Progress Bar */}
                 <div className="w-full h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-3 overflow-hidden">
@@ -257,9 +255,16 @@ export default function ContestCard({ contest, show }) {
         </div>
     );
 }
-
-function parseISTTime(datetime) {
-    return new Date(
-        new Date(datetime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
-    );
+function getISTTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    });
+}
+function getISTDateObject(dateString) {
+    const utcDate = new Date(dateString);
+    const IST_OFFSET = 5.5 * 60 * 60 * 1000;
+    return new Date(utcDate.getTime() + IST_OFFSET);
 }
