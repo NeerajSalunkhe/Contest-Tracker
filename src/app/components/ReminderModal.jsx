@@ -47,11 +47,15 @@ export default function ReminderModal({ userid, email, contest, onClose, reminde
 
   const getReminderTimestamp = (type) => {
     if (type.special === '6AM') {
-      const istStart = new Date(
-        new Date(startDate).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
-      );
-      istStart.setHours(6, 0, 0, 0);
-      return new Date(istStart.toLocaleString('en-US', { timeZone: 'UTC' })).getTime();
+      const istDateString = new Date(startDate).toLocaleString('en-US', {
+        timeZone: 'Asia/Kolkata',
+      });
+      const istDate = new Date(istDateString);
+      istDate.setHours(6, 0, 0, 0);
+      const utcTimestamp = new Date(
+        istDate.toLocaleString('en-US', { timeZone: 'UTC' })
+      ).getTime();
+      return utcTimestamp;
     } else {
       return new Date(startDate.getTime() - type.offset).getTime();
     }
