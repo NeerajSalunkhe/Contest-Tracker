@@ -17,7 +17,9 @@ export async function POST(req) {
     if (isNaN(parsedReminderTime.getTime())) {
       return NextResponse.json({ error: 'Invalid reminder time' }, { status: 400 });
     }
-
+    console.log(`reminder time : ${reminderTime}`);
+    const nowIST = new Date().getTime();
+    console.log(`current time : ${nowIST}`);
     // Find the user's contest doc
     const userDoc = await Contest.findOne({ userid });
 
