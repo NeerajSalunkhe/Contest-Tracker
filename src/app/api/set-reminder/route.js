@@ -6,9 +6,9 @@ export async function POST(req) {
   await DbConnect();
 
   try {
-    const { userid, email,contestid, reminderTime, contest } = await req.json();
+    const { userid, email, contestid, reminderTime, contest } = await req.json();
 
-    if (!userid ||!email|| !contest?.id || !reminderTime) {
+    if (!userid || !email || !contest?.id || !reminderTime) {
       return NextResponse.json({ error: 'Missing data' }, { status: 400 });
     }
 
@@ -17,9 +17,15 @@ export async function POST(req) {
     if (isNaN(parsedReminderTime.getTime())) {
       return NextResponse.json({ error: 'Invalid reminder time' }, { status: 400 });
     }
+    console.log(`start time :${contest.startTime}`);
     console.log(`reminder time : ${reminderTime}`);
-    const nowIST = new Date().getTime();
-    console.log(`current time : ${nowIST}`);
+    const nowIST = new Date().toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour12: true,
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+    console.log("Current IST:", nowIST);
     // Find the user's contest doc
     const userDoc = await Contest.findOne({ userid });
 
