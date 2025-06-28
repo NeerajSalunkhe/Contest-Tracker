@@ -18,6 +18,9 @@ export async function GET() {
     const allUsers = await Contest.find({});
     let sentCount = 0;
 
+    // Get current IST time
+    const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+
     for (const user of allUsers) {
       const { userid, email, contests } = user;
 
@@ -33,23 +36,18 @@ export async function GET() {
           if (
             reminder &&
             !reminder.sent &&
-            new Date(reminder.time) <= new Date()
+            new Date(reminder.time) <= nowIST
           ) {
             try {
               const startDate = new Date(contest.startTime); // Already in IST
-              const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-              
-              console.log("nowIST : ",nowIST);
-              console.log("startDate :",startDate);
 
-              const diffMs = startDate.getTime() - now.getTime();
+              const diffMs = startDate.getTime() - nowIST.getTime();
               const hours = Math.floor(diffMs / (1000 * 60 * 60));
               const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
               const humanReadableTime = `${hours > 0 ? `${hours} hour${hours > 1 ? 's' : ''} ` : ''
                 }${minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : ''}`.trim();
 
-              // Format start time directly without timezone conversion
               const formattedStart = startDate.toLocaleString('en-IN', {
                 dateStyle: 'full',
                 timeStyle: 'short',
