@@ -118,7 +118,7 @@ export default function ContestCard({ contest, show }) {
     };
     useEffect(() => {
         const updateCountdown = () => {
-            const nowIST = getISTDateObject(new Date()).getTime();
+            const nowIST = new Date().getTime();
             const startIST = getISTDateObject(contest.startTime).getTime();
             const endIST = getISTDateObject(contest.endTime).getTime();
             const duration = endIST - startIST;
@@ -256,15 +256,15 @@ export default function ContestCard({ contest, show }) {
     );
 }
 function getISTTime(dateString) {
-    const date = new Date(dateString);
+    const date = new Date(new Date(dateString).getTime() - (5.5 * 60 * 60 * 1000));
     return date.toLocaleString('en-IN', {
         timeZone: 'Asia/Kolkata',
         dateStyle: 'medium',
         timeStyle: 'short',
     });
 }
+
 function getISTDateObject(dateString) {
-    const utcDate = new Date(dateString);
-    const IST_OFFSET = 5.5 * 60 * 60 * 1000;
-    return new Date(utcDate.getTime() + IST_OFFSET);
+    return new Date(new Date(dateString).getTime() - (5.5 * 60 * 60 * 1000));
 }
+

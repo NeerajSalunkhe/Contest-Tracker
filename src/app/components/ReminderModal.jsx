@@ -36,14 +36,14 @@ export default function ReminderModal({ userid, email, contest, onClose, reminde
   const platformName = contest.platform.replace('.com', '');
 
   const formatTime = (datetime) => {
+    const istDate = new Date(new Date(datetime).getTime() - (5.5 * 60 * 60 * 1000));
     const formatter = new Intl.DateTimeFormat('en-IN', {
       timeZone: 'Asia/Kolkata',
       dateStyle: 'full',
       timeStyle: 'short',
     });
-    return formatter.format(new Date(datetime));
+    return formatter.format(istDate);
   };
-
 
   const getReminderTimestamp = (type) => {
     if (type.special === '6AM') {

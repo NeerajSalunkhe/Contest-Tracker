@@ -9,14 +9,13 @@ import { useRouter } from 'next/navigation';
 
 
 function getISTTime(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleString('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
+    const date = new Date(new Date(dateString).getTime() - (5.5 * 60 * 60 * 1000));
+    return date.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    });
 }
-
 export default function FinishedContestCard({ contest, show }) {
   const { user, isLoaded } = useUser();
   const cardRef = useRef(null);
