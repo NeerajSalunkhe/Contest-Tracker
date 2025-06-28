@@ -37,15 +37,17 @@ export async function GET() {
           ) {
             try {
               const startDate = new Date(contest.startTime); // Already in IST
-              const now = new Date();
+              const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+              
+              console.log("nowIST : ",nowIST);
+              console.log("startDate :",startDate);
 
               const diffMs = startDate.getTime() - now.getTime();
               const hours = Math.floor(diffMs / (1000 * 60 * 60));
               const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
-              const humanReadableTime = `${
-                hours > 0 ? `${hours} hour${hours > 1 ? 's' : ''} ` : ''
-              }${minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : ''}`.trim();
+              const humanReadableTime = `${hours > 0 ? `${hours} hour${hours > 1 ? 's' : ''} ` : ''
+                }${minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : ''}`.trim();
 
               // Format start time directly without timezone conversion
               const formattedStart = startDate.toLocaleString('en-IN', {

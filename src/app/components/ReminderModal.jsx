@@ -10,7 +10,7 @@ import { Loader2Icon } from "lucide-react"
 const reminderOptions = [
   { label: '30 minutes before', offset: 30 * 60 * 1000 },
   { label: '1 hour before', offset: 60 * 60 * 1000 },
-  { label: 'On Contest day (6 AM)', special: '6AM' },
+  { label: '24 hours before', offset: 24 * 60 * 60 * 1000 },
 ];
 
 function parseISTTime(datetime) {
@@ -46,19 +46,7 @@ export default function ReminderModal({ userid, email, contest, onClose, reminde
   };
 
   const getReminderTimestamp = (type) => {
-    if (type.special === '6AM') {
-      const istDateString = new Date(startDate).toLocaleString('en-US', {
-        timeZone: 'Asia/Kolkata',
-      });
-      const istDate = new Date(istDateString);
-      istDate.setHours(6, 0, 0, 0);
-      const utcTimestamp = new Date(
-        istDate.toLocaleString('en-US', { timeZone: 'UTC' })
-      ).getTime();
-      return utcTimestamp;
-    } else {
-      return new Date(startDate.getTime() - type.offset).getTime();
-    }
+    return new Date(startDate.getTime() - type.offset).getTime();
   };
 
   const activeReminderTimes = localReminders.map((r) => new Date(r.time).getTime());
