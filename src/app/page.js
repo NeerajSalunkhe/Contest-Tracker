@@ -104,7 +104,7 @@ export default function ContestsPage() {
   };
 
   const filteredContests = () => {
-    const now = new Date();
+    const now = new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000);
     const { upcoming = [], finished = [], bookmarked = [] } = contests;
 
     if (selectedTab === 'Bookmarks') {
@@ -134,7 +134,7 @@ export default function ContestsPage() {
 
   return (
     <ProtectedRoute>
-      <Navbar/>
+      <Navbar />
       <div className="flex h-screen overflow-y-clip">
         {/* Sidebar */}
         <aside

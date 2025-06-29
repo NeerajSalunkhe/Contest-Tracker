@@ -145,9 +145,14 @@ export default function ContestCard({ contest, show }) {
                 setIsLive(false);
                 setTimeLeft(`Starts in : ${formattedTime}`);
 
-                const totalWait = startIST - (startIST - duration);
-                const waited = nowIST - (startIST - duration);
-                setProgress((waited / totalWait) * 100);
+                // Progress from 1 week before start time
+                const oneWeekBeforeStart = startIST - 7 * 24 * 60 * 60 * 1000; // 1 week in ms
+                const totalCountdownRange = startIST - oneWeekBeforeStart;
+                const timeElapsed = nowIST - oneWeekBeforeStart;
+
+                const percentProgress = (timeElapsed / totalCountdownRange) * 100;
+
+                setProgress(Math.max(0, Math.min(100, percentProgress)));
             } else {
                 setIsLive(false);
                 setTimeLeft('Finished');
@@ -208,6 +213,17 @@ export default function ContestCard({ contest, show }) {
                 </span>
                 {/* Progress Bar */}
                 <div className="w-full h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-3 overflow-hidden">
+                    {isLive ? (
+                        <div
+                            className="h-full rounded-full bg-gradient-to-r from-red-500 to-yellow-400 transition-all duration-500"
+                            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                        />
+                    ) : (
+                        <div
+                            className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-purple-600 transition-all duration-500"
+                            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                        />
+                    )}
                     <div
                         className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-purple-600 transition-all duration-500"
                         style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
