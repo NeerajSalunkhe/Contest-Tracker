@@ -7,7 +7,7 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: white;
-  background: radial-gradient(125% 125% at 50% 10%, #6b21a8 30%, #ec4899 90%);
+  background: radial-gradient(125% 125% at 50% 10%, #755c86 30%, #3b0057 50%);
   background-size: 160% 160%;
   background-repeat: no-repeat;
   animation: radialShift 12s ease-in-out infinite;
@@ -23,13 +23,54 @@ body {
     background-position: 50% 10%;
     background-size: 160% 160%;
   }
+
   50% {
     background-position: 50% 30%;
     background-size: 180% 180%;
   }
+
   100% {
     background-position: 50% 10%;
     background-size: 160% 160%;
+  }
+}
+
+.glass-refract-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(200, 200, 255, 0.03) 25%,
+    rgba(100, 100, 150, 0.05) 50%,
+    rgba(200, 200, 255, 0.03) 75%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 300% 300%;
+  background-position: center;
+  filter: blur(10px);
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+  transition: background-position 0.3s ease-in-out;
+}
+
+/* On hover, animate background-position smoothly */
+.glass-refract-border:hover::before {
+  animation: bgShiftSmooth 8s ease-in-out infinite;
+}
+
+@keyframes bgShiftSmooth {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 

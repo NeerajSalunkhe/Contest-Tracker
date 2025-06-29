@@ -44,9 +44,9 @@ export default function Dashboard() {
         email: user.primaryEmailAddress.emailAddress,
         type,
       });
-      toast.success(
-        isSet ? `Removed ${type} reminder` : `Set ${type} reminder`
-      );
+      // toast.success(
+      //   isSet ? `Removed ${type.label} reminder` : `Set ${type.label} reminder`
+      // );
       fetchReminders();
     } catch {
       toast.error('Error updating reminder');
@@ -109,7 +109,7 @@ export default function Dashboard() {
           })}
         </div>
         </div>
-        <ToastContainer
+        {/* <ToastContainer
           autoClose={1500}
           pauseOnHover
           draggable
@@ -121,7 +121,7 @@ export default function Dashboard() {
             borderRadius: '0.75rem',
             boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
           }}
-        />
+        /> */}
       </div >
     </ProtectedRoute>
   );

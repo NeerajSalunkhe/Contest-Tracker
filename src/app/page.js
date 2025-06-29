@@ -150,7 +150,7 @@ export default function ContestsPage() {
         {/* Sidebar */}
         <aside
           className={`fixed top-0 h-full pt-20 left-0 z-40 w-64 transform bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-500 transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            } sm:translate-x-0 md:bg-gradient-to-r md:from-indigo-200/30 md:via-purple-500/30 md:to-indigo-500/30`}
+            } sm:translate-x-0 md:bg-gradient-to-r md:from-orange-200/10 md:via-orange-200/10 md:to-gray-500/20 glass-refract-border shadow-2xl`}
         >
 
           <div className="h-full flex flex-col p-4">
@@ -167,7 +167,7 @@ export default function ContestsPage() {
 
             {/* Tabs */}
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-black mb-2">Tabs</h3>
+              <h3 className="text-xl italic underline font-semibold text-gray-200 mb-2">Tabs</h3>
               <div className="space-y-2">
                 {tabs.map((tab) => {
                   const isSelected = selectedTab === tab;
@@ -194,7 +194,7 @@ export default function ContestsPage() {
 
             {/* Platform Filters */}
             <div className="flex-1 overflow-y-auto">
-              <h3 className="text-xl font-semibold text-black mb-2">Platforms</h3>
+              <h3 className="text-xl italic underline font-semibold text-gray-300 mb-2">Platforms</h3>
               <div className="space-y-2">
                 {platformOptions.map(({ name, key }) => {
                   const isActive = selectedPlatforms.includes(key);
@@ -203,8 +203,8 @@ export default function ContestsPage() {
                       key={key}
                       onClick={() => togglePlatform(key)}
                       className={`cursor-pointer w-full text-sm px-5 py-2.5 rounded-lg font-medium text-center mb-2 transition ${isActive
-                          ? 'text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80'
-                          : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                        ? 'text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                         }`}
                     >
                       {name}
@@ -273,8 +273,11 @@ export default function ContestsPage() {
                   })();
                 })
               ) : (
-                <div className="text-center h-full w-full row-span-full col-span-full text-gray-500 dark:text-gray-300">
-                  <img src="/empty.svg" alt="No contests" className="mx-auto my-auto" />
+                <div className="justify-center flex flex-col pt-10 text-center h-full w-full row-span-full col-span-full text-gray-500 dark:text-gray-300">
+                  <div className='drop-shadow-black rounded-4xl shadow-2xl py-20'>
+                    <img src="/empty1.png" alt="No contests" className="mx-auto my-auto" />
+                    <span className='text-black font-bold text-4xl italic underline'>Empty</span>
+                  </div>
                 </div>
               )}
             </div>

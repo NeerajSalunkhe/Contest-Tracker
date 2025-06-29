@@ -9,12 +9,12 @@ import { useRouter } from 'next/navigation';
 
 
 function getISTTime(dateString) {
-    const date = new Date(new Date(dateString).getTime() - (5.5 * 60 * 60 * 1000));
-    return date.toLocaleString('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        dateStyle: 'medium',
-        timeStyle: 'short',
-    });
+  const date = new Date(new Date(dateString).getTime() - (5.5 * 60 * 60 * 1000));
+  return date.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
 }
 export default function FinishedContestCard({ contest, show }) {
   const { user, isLoaded } = useUser();
@@ -143,8 +143,15 @@ export default function FinishedContestCard({ contest, show }) {
   };
   if (!user) return null;
   return (
-    <div ref={cardRef} className="relative z-0 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl">
-      <div className="min-h-76 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
+    <div
+      ref={cardRef}
+      className="relative z-0 transition-transform hover:scale-[1.02] hover:shadow-2xl duration-300 glass-refract-border"
+    >
+      <div className="absolute inset-0 rounded-2xl pointer-events-none z-10">
+        <div className="w-full h-full rounded-2xl blur-[6px] opacity-80 bg-gradient-to-br from-white/10 via-white/10 to-transparent border border-white/20 group-hover:opacity-100 transition duration-300" />
+      </div>
+
+      <div className="rounded-2xl border min-h-76 border-gray-300 dark:border-gray-700 bg-white/5 dark:bg-gray-900/60 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
