@@ -2,30 +2,34 @@
 @import "tw-animate-css";
 
 /* global.css */
-
 body {
   min-height: 100vh;
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: white;
-  background: linear-gradient(270deg, #38b2ac, #9f7aea, #ed64a6); /* teal → purple → pink */
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: radial-gradient(125% 125% at 50% 10%, #6b21a8 30%, #ec4899 90%);
+  background-size: 160% 160%;
+  background-repeat: no-repeat;
+  animation: radialShift 12s ease-in-out infinite;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   transition: background 0.5s ease;
 }
 
-@keyframes gradientShift {
+
+
+@keyframes radialShift {
   0% {
-    background-position: 0% 50%;
+    background-position: 50% 10%;
+    background-size: 160% 160%;
   }
-
   50% {
-    background-position: 100% 50%;
+    background-position: 50% 30%;
+    background-size: 180% 180%;
   }
-
   100% {
-    background-position: 0% 50%;
+    background-position: 50% 10%;
+    background-size: 160% 160%;
   }
 }
+

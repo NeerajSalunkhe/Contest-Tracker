@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   const reminderTypes = [
     { type: '1hrBefore', label: '1 Hour Before', icon: <AlarmClock className="w-4 h-4 mr-2" /> },
-    { type: '6amDayOf', label: '6 AM Day Of', icon: <AlarmClock className="w-4 h-4 mr-2" /> },
+    { type: '6amDayOf', label: '24 Hour Before', icon: <AlarmClock className="w-4 h-4 mr-2" /> },
   ];
 
   const fetchReminders = async () => {
@@ -64,7 +64,7 @@ export default function Dashboard() {
   return (
     <ProtectedRoute>
       <Navbar/>
-      <div className='flex justify-center pt-10 h-screen items-center'>
+      <div className='flex justify-center pt-10 h-screen items-baseline'>
         <div className="py-10 px-4 flex flex-col items-center text-black
   bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 max-w-md w-full mx-4"
         >
@@ -85,7 +85,7 @@ export default function Dashboard() {
           </p>
 
           {/* Reminder Buttons */}
-          {/* <h2 className="text-lg font-semibold mb-4 text-black dark:text-white">
+          <h2 className="text-lg font-semibold mb-4 text-black dark:text-white">
           Set Up Auto Reminders
         </h2>
 
@@ -107,7 +107,7 @@ export default function Dashboard() {
               </Button>
             );
           })}
-        </div> */}
+        </div>
         </div>
         <ToastContainer
           autoClose={1500}

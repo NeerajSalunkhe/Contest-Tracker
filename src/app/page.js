@@ -146,16 +146,17 @@ export default function ContestsPage() {
   return (
     <ProtectedRoute>
       <Navbar />
-      <div className="flex h-screen overflow-y-clip">
+      <div className="flex h-screen overflow-y-clip pb-20">
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 h-full pt-20 left-0 z-40 backdrop-blur-xs w-64 transform bg-white md:dark:bg-gray-900/80 dark:bg-gray-900 border-r border-gray-300 dark:border-gray-700 transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            } sm:translate-x-0`}
+          className={`fixed top-0 h-full pt-20 left-0 z-40 w-64 transform bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-500 transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            } sm:translate-x-0 md:bg-gradient-to-r md:from-indigo-200/30 md:via-purple-500/30 md:to-indigo-500/30`}
         >
+
           <div className="h-full flex flex-col p-4">
             {/* Mobile Close Button */}
             <div className="flex items-center justify-between sm:hidden mb-4">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Filters</h2>
+              <h2 className="text-lg font-semibold text-gray dark:text-white">Filters</h2>
               <button
                 onClick={() => setSidebarOpen(false)}
                 className="text-gray-600 dark:text-gray-300"
@@ -166,52 +167,64 @@ export default function ContestsPage() {
 
             {/* Tabs */}
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Tabs</h3>
+              <h3 className="text-xl font-semibold text-black mb-2">Tabs</h3>
               <div className="space-y-2">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => {
-                      setSelectedTab(tab);
-                      setSidebarOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-2 rounded-lg cursor-pointer font-medium transition ${selectedTab === tab
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white'
-                      : 'text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800'
-                      }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
+                {tabs.map((tab) => {
+                  const isSelected = selectedTab === tab;
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => {
+                        setSelectedTab(tab);
+                        setSidebarOpen(false);
+                      }}
+                      className={`cursor-pointer w-full text-sm px-5 py-2.5 rounded-lg font-medium text-center mb-2 transition ${isSelected
+                        ? 'text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                        }`}
+                    >
+                      {tab}
+                    </button>
+                  );
+                })}
+
+
               </div>
             </div>
 
             {/* Platform Filters */}
             <div className="flex-1 overflow-y-auto">
-              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Platforms</h3>
+              <h3 className="text-xl font-semibold text-black mb-2">Platforms</h3>
               <div className="space-y-2">
-                {platformOptions.map(({ name, key }) => (
-                  <button
-                    key={key}
-                    onClick={() => togglePlatform(key)}
-                    className={`w-full cursor-pointer text-left px-4 py-2 rounded-lg font-medium transition ${selectedPlatforms.includes(key)
-                      ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
-                      : 'text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800'
-                      }`}
-                  >
-                    {name}
-                  </button>
-                ))}
+                {platformOptions.map(({ name, key }) => {
+                  const isActive = selectedPlatforms.includes(key);
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => togglePlatform(key)}
+                      className={`cursor-pointer w-full text-sm px-5 py-2.5 rounded-lg font-medium text-center mb-2 transition ${isActive
+                          ? 'text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80'
+                          : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                        }`}
+                    >
+                      {name}
+                    </button>
+                  );
+                })}
+
+
+
               </div>
               <button
                 onClick={toggleAll}
-                className={`w-full mt-4 cursor-pointer text-center px-4 py-2 rounded-lg font-semibold transition ${selectedPlatforms.length === platformOptions.length
-                  ? 'bg-gray-500 text-white'
-                  : 'bg-orange-400 hover:bg-orange-500 text-white'
+                className={`cursor-pointer w-full mt-4 text-sm px-5 py-2.5 rounded-lg font-semibold text-center mb-2 transition ${selectedPlatforms.length === platformOptions.length
+                  ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  : 'text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yello-300 dark:focus:ring-orange-800 shadow-lg shadow-orange-500/50 dark:shadow-lg dark:shadow-orange-800/80'
                   }`}
               >
                 {selectedPlatforms.length === platformOptions.length ? 'Clear All' : 'Select All'}
               </button>
+
             </div>
           </div>
         </aside>
@@ -219,7 +232,7 @@ export default function ContestsPage() {
         {/* Content Area */}
         <div className="flex-1 flex flex-col sm:ml-64 h-full">
           {/* Mobile Top Bar */}
-          <div className="sm:hidden px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-900">
+          <div className="sm:hidden sticky top-0 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-900">
             <button onClick={() => setSidebarOpen(true)} className="p-2 bg-gray-100 dark:bg-gray-800 rounded">
               <HamburgerIcon size={20} />
             </button>
