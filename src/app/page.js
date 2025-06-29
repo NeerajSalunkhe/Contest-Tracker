@@ -119,7 +119,14 @@ export default function ContestsPage() {
     const { upcoming = [], finished = [], bookmarked = [] } = contests;
 
     if (selectedTab === 'Bookmarks') {
-      return bookmarked.filter((c) => selectedPlatforms.includes(c.platform));
+      const istOffset = 5.5 * 60 * 60 * 1000;
+      return bookmarked
+        .filter((c) => selectedPlatforms.includes(c.platform))
+        .map((c) => ({
+          ...c,
+          startTime: new Date(new Date(c.startTime).getTime() + istOffset).toISOString(),
+          endTime: new Date(new Date(c.endTime).getTime() + istOffset).toISOString(),
+        }));
     }
 
     const all = [...upcoming, ...finished];
