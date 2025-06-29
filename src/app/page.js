@@ -119,14 +119,7 @@ export default function ContestsPage() {
     const { upcoming = [], finished = [], bookmarked = [] } = contests;
 
     if (selectedTab === 'Bookmarks') {
-      const istOffset = 5.5 * 60 * 60 * 1000;
-      return bookmarked
-        .filter((c) => selectedPlatforms.includes(c.platform))
-        .map((c) => ({
-          ...c,
-          startTime: new Date(new Date(c.startTime).getTime() + istOffset).toISOString(),
-          endTime: new Date(new Date(c.endTime).getTime() + istOffset).toISOString(),
-        }));
+      return bookmarked.filter((c) => selectedPlatforms.includes(c.platform));
     }
 
     const all = [...upcoming, ...finished];
@@ -246,13 +239,25 @@ export default function ContestsPage() {
 
                   const CardComponent = isFinished ? FinishedContestCard : ContestCard;
 
-                  return (
-                    <CardComponent
-                      key={`${contest.name}-${contest.startTime}`}
-                      contest={contest}
-                      show={selectedPlatforms}
-                    />
-                  );
+                  return (() => {
+                    const istOffset = 5.5 * 60 * 60 * 1000;
+                    const adjustedContest =
+                      selectedTab === 'Bookmarks'
+                        ? {
+                          ...contest,
+                          startTime: new Date(new Date(contest.startTime).getTime() + istOffset).toISOString(),
+                          endTime: new Date(new Date(contest.endTime).getTime() + istOffset).toISOString(),
+                        }
+                        : contest;
+
+                    return (
+                      <CardComponent
+                        key={`${contest.name}-${contest.startTime}`}
+                        contest={adjustedContest}
+                        show={selectedPlatforms}
+                      />
+                    );
+                  })();
                 })
               ) : (
                 <div className="text-center h-full w-full row-span-full col-span-full text-gray-500 dark:text-gray-300">
