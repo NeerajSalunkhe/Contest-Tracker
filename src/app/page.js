@@ -56,11 +56,21 @@ export default function ContestsPage() {
       body: JSON.stringify({ userid: user?.id }),
     })
       .then((res) => res.json())
-      .then((data) =>
-        setContests((prev) => ({ ...prev, bookmarked: data.contests || [] }))
-      )
+      .then((data) => {
+        const contestsInUTC = (data.contests || []).map((contest) => {
+          const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in ms
+          return {
+            ...contest,
+            startTime: new Date(new Date(contest.startTime).getTime() - istOffset).toISOString(),
+            endTime: new Date(new Date(contest.endTime).getTime() - istOffset).toISOString(),
+          };
+        });
+
+        setContests((prev) => ({ ...prev, bookmarked: contestsInUTC }));
+      })
       .catch(console.error);
   }, [selectedTab, user?.id, isLoaded]);
+
 
   // Fetch all contests
   useEffect(() => {
@@ -104,7 +114,8 @@ export default function ContestsPage() {
   };
 
   const filteredContests = () => {
-    const now = new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000);
+    // const now = new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000);
+    const now = new Date();
     const { upcoming = [], finished = [], bookmarked = [] } = contests;
 
     if (selectedTab === 'Bookmarks') {
