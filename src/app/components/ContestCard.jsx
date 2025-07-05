@@ -10,6 +10,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useUser } from '@clerk/nextjs';
 import { BellRing } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 
 
@@ -23,7 +24,8 @@ export default function ContestCard({ contest, show }) {
     const [reminders, setReminders] = useState([]);
     const [reload, setReload] = useState(false); // to trigger reload after modal changes
     const router = useRouter();
-
+    const [ul, setUl] = useState('/');
+    const [uu, setUU] = useState(contest.url);
     const cardRef = useRef(null);
     const [visible, setVisible] = useState(false);
     const openReminder = () => setShowModal(true);
@@ -33,6 +35,24 @@ export default function ContestCard({ contest, show }) {
     };
     if (!show.includes(contest.platform) || !isLoaded) return null;
 
+
+    useEffect(() => {
+        setUU(contest.url);
+    }, [contest]);
+    // Intersection Observer
+    useEffect(() => {
+        if (contest.platform === 'codeforces.com') {
+            // Convert: https://codeforces.com/contests/2119/ → https://codeforces.com/contest/2119/
+            const correctedUU = uu.replace('/contests/', '/contest/');
+            setUl(`${correctedUU}/standings/friends/true`);
+        } else if (contest.platform === 'leetcode.com') {
+            setUl(`${uu}/ranking/?region=global_v2`);
+        } else {
+            // Convert: https://www.codechef.com/START193B → https://www.codechef.com/ranking/START193B
+            const correctedUU = uu.replace('codechef.com/', 'codechef.com/rankings/');
+            setUl(`${correctedUU}B?itemsPerPage=100&order=asc&page=1&sortBy=rank`);
+        }
+    }, [contest]);
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -177,7 +197,7 @@ export default function ContestCard({ contest, show }) {
                 <div className="w-full h-full rounded-2xl blur-[6px] opacity-80 bg-gradient-to-br from-white/10 via-white/10 to-transparent border border-white/20 group-hover:opacity-100 transition duration-300" />
             </div>
 
-            <div className="rounded-2xl border min-h-76 border-gray-300 dark:border-gray-700 bg-white/5 dark:bg-gray-900/60 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
+            <div className="rounded-2xl border min-h-81 border-gray-300 dark:border-gray-700 bg-white/5 dark:bg-gray-900/60 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
 
                 {/* ...rest of your content */}
 
@@ -206,17 +226,39 @@ export default function ContestCard({ contest, show }) {
 
                 {/* Title & Countdown */}
                 <div className="relative">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1 overflow-y-auto max-h-14">
                         {contest.name}
                     </h2>
-                    <p className="text-sm text-indigo-600 dark:text-yellow-300 font-mono">
-                        {timeLeft}
-                    </p>
-                    {isLive && (
-                        <span className="absolute top-0 right-0 text-xs px-2 py-1 bg-red-600 text-white rounded-full animate-pulse shadow-md font-bold">
-                            LIVE
-                        </span>
-                    )}
+                    <div className='flex justify-between items-center'>
+                        <p className="text-sm text-indigo-600 dark:text-yellow-300 font-mono">
+                            {timeLeft}
+                        </p>
+                        {isLive && (
+                            <div>
+                                <span className="absolute top-0 right-0 text-xs px-2 py-1 bg-red-600 text-white rounded-full animate-pulse shadow-md font-bold">
+                                    LIVE
+                                </span>
+                                <div>
+                                    <Link
+                                        href={ul}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <button
+                                            type="button"
+                                            className="flex-1 text-center cursor-pointer text-white bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 transition"
+                                        >
+                                            Live Standings
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+
+                        )}
+
+                    </div>
+
+
                 </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                     {getISTTime(contest.startTime)} IST

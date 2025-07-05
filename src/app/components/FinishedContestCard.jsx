@@ -170,7 +170,7 @@ export default function FinishedContestCard({ contest, show }) {
         <div className="w-full h-full rounded-2xl blur-[6px] opacity-80 bg-gradient-to-br from-white/10 via-white/10 to-transparent border border-white/20 group-hover:opacity-100 transition duration-300" />
       </div>
 
-      <div className="rounded-2xl border min-h-76 border-gray-300 dark:border-gray-700 bg-white/5 dark:bg-gray-900/60 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
+      <div className="rounded-2xl border min-h-81 border-gray-300 dark:border-gray-700 bg-white/5 dark:bg-gray-900/60 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between space-y-4 overflow-hidden">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
