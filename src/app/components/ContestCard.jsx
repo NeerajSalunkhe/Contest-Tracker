@@ -267,8 +267,8 @@ export default function ContestCard({ contest, show }) {
                                         type="button"
                                         className="flex-1 text-center cursor-pointer text-white bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 transition"
                                     >
-                                        Live Standings
-                                    </button>
+                                        Standings
+                                    </button>   
                                 </Link>
                             </div>
                         )}

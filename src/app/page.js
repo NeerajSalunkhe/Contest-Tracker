@@ -143,12 +143,17 @@ export default function ContestsPage() {
 
   const finalContests = (() => {
     const list = filteredContests();
-    if (selectedTab === 'Finished') {
-      // Sort finished contests in reverse chronological order (latest first)
-      return [...list].sort((a, b) => new Date(b.endTime) - new Date(a.endTime));
+    const now = new Date();
+
+    if (selectedTab !== 'Finished') {
+      const upcomingOrLive = list.filter(c => new Date(c.endTime) > now);
+      const finished = list.filter(c => new Date(c.endTime) <= now);
+      return [...upcomingOrLive, ...finished]; // ⬅️ Push finished ones to bottom
     }
+
     return list;
   })();
+
 
 
   return (
