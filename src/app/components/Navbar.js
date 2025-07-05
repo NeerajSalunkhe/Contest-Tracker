@@ -98,7 +98,7 @@ export default function Navbar() {
                         </div>
                     </div>
                 )}
-                <ToastContainer
+                {/* <ToastContainer
                     autoClose={2000}
                     closeOnClick
                     pauseOnHover
@@ -124,7 +124,7 @@ export default function Navbar() {
                 //     zIndex: 9999,
                 //     pointerEvents: 'none',
                 // }}
-                />
+                /> */}
             </nav>
         </ProtectedRoute>
     );

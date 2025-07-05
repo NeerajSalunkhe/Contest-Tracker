@@ -120,7 +120,7 @@ export default function ReminderModal({ userid, email, contest, onClose, reminde
 
   return (
     <>
-      <ToastContainer
+      {/* <ToastContainer
         autoClose={2000}
         pauseOnHover
         draggable
@@ -137,7 +137,7 @@ export default function ReminderModal({ userid, email, contest, onClose, reminde
           fontSize: '0.9rem',
         }}
         className="overflow-x-clip"
-      />
+      /> */}
 
       <div className="fixed inset-0 z-[999] bg-black/70 backdrop-blur-xs" />
 
