@@ -6,6 +6,8 @@ import PlatformLogo from './PlatformLogo';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { set } from 'mongoose';
 
 
 function getISTTime(dateString) {
@@ -25,11 +27,28 @@ export default function FinishedContestCard({ contest, show }) {
   const [checked, setChecked] = useState(false);
   const [solutionLink, setSolutionLink] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [ul, setUl] = useState('/');
+  const [uu, setUU] = useState(contest.url);
   // Exit early if not loaded or platform filter mismatch
   if (!show.includes(contest.platform) || !isLoaded) return null;
-
+  // console.log(contest.url);
+  useEffect(() => {
+    setUU(contest.url);
+  }, [contest]);
   // Intersection Observer
+  useEffect(() => {
+    if (contest.platform === 'codeforces.com') {
+      // Convert: https://codeforces.com/contests/2119/ → https://codeforces.com/contest/2119/
+      const correctedUU = uu.replace('/contests/', '/contest/');
+      setUl(`${correctedUU}/standings/friends/true`);
+    } else if (contest.platform === 'leetcode.com') {
+      setUl(`${uu}/ranking/?region=global_v2`);
+    } else {
+      // Convert: https://www.codechef.com/START193B → https://www.codechef.com/ranking/START193B
+      const correctedUU = uu.replace('codechef.com/', 'codechef.com/rankings/');
+      setUl(`${correctedUU}B?itemsPerPage=100&order=asc&page=1&sortBy=rank`);
+    }
+  }, [contest]);
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -194,9 +213,26 @@ export default function FinishedContestCard({ contest, show }) {
         <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-1 leading-snug">
           {contest.name}
         </h2>
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          {getISTTime(contest.startTime)} IST
-        </span>
+        <div className='flex justify-between items-center'>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            {getISTTime(contest.startTime)} IST
+          </span>
+          <div>
+            <Link
+              href={ul}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button
+                type="button"
+                className="flex-1 text-center cursor-pointer text-white bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 transition"
+              >
+                Standings
+              </button>
+            </Link>
+          </div>
+        </div>
+
 
         {/* Buttons */}
         <div className="flex gap-3 pt-2">
