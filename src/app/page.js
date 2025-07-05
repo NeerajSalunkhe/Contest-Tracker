@@ -141,7 +141,15 @@ export default function ContestsPage() {
   };
 
 
-  const finalContests = filteredContests();
+  const finalContests = (() => {
+    const list = filteredContests();
+    if (selectedTab === 'Finished') {
+      // Sort finished contests in reverse chronological order (latest first)
+      return [...list].sort((a, b) => new Date(b.endTime) - new Date(a.endTime));
+    }
+    return list;
+  })();
+
 
   return (
     <ProtectedRoute>
@@ -187,8 +195,6 @@ export default function ContestsPage() {
                     </button>
                   );
                 })}
-
-
               </div>
             </div>
 

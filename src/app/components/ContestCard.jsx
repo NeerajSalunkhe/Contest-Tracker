@@ -20,6 +20,7 @@ export default function ContestCard({ contest, show }) {
     const [timeLeft, setTimeLeft] = useState('');
     const [progress, setProgress] = useState(0);
     const [isLive, setIsLive] = useState(false);
+    const [isfinish, setFinish] = useState(false);
     const [bookmarked, setBookmarked] = useState(false);
     const [reminders, setReminders] = useState([]);
     const [reload, setReload] = useState(false); // to trigger reload after modal changes
@@ -174,6 +175,7 @@ export default function ContestCard({ contest, show }) {
 
                 setProgress(Math.max(0, Math.min(100, percentProgress)));
             } else {
+                setFinish(true);
                 setIsLive(false);
                 setTimeLeft('Finished');
                 setProgress(100);
@@ -253,12 +255,24 @@ export default function ContestCard({ contest, show }) {
                                     </Link>
                                 </div>
                             </div>
-
                         )}
-
+                        {isfinish && (
+                            <div>
+                                <Link
+                                    href={ul}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <button
+                                        type="button"
+                                        className="flex-1 text-center cursor-pointer text-white bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 transition"
+                                    >
+                                        Live Standings
+                                    </button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
-
-
                 </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                     {getISTTime(contest.startTime)} IST
